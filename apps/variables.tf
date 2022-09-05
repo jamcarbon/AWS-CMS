@@ -1,6 +1,6 @@
-## Apps
+## Meta
 variable "meta" {
-  description = "App, which contains tags, environment or application name"
+  description = "Application meta, which contains tags, environment or application name"
   default     = {}
 }
 

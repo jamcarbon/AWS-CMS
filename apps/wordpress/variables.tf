@@ -1,6 +1,6 @@
-## Apps
+## Meta
 variable "meta" {
-  description = "App, which contains tags, environment or application name"
+  description = "Application meta, which contains tags, environment or application name"
   default     = {}
 }
 
@@ -11,7 +11,7 @@ variable "networking_module" {
 }
 
 ## Apps
-variable "apps" {
-  description = "Apps aims to hold data related with will be provisioned apps"
+variable "app_config" {
+  description = "App Config aims to hold data related with will be provisioned apps"
   default     = {}
 }
