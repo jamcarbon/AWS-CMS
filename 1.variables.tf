@@ -1,17 +1,34 @@
 ## Apps
-variable "meta" {
-  description = "App, which contains tags, environment or application name"
-  default     = {}
+variable "region" {
+  default     = "ap-south-1"
+}
+
+variable "project_name" {
+  default     = "cms"
 }
 
 ## Networking Service
-variable "networking_module" {
-  description = "Networking service aims to hold data related with networking services"
+variable "key_name" {
+  description = "Key name to use"
+  default     = "CMS_key"
+}
+## Apps
+variable "image_owner" {
+  description = "image owner"
   default     = {}
 }
 
-## Apps
-variable "apps" {
-  description = "Apps aims to hold data related with will be provisioned apps"
-  default     = {}
+variable "desired_capacity" {
+  description = "Number of intances to start initially"
+  default     = "1"
+}
+
+variable "max_size" {
+  description = "Max number of intances to upscale"
+  default     = "3"
+}
+
+variable "min_size" {
+  description = "Minimum number of instances for the Autoscaling group"
+  default     = "1"
 }
