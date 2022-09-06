@@ -2,32 +2,6 @@ resource "aws_key_pair" "asg-key-pair" {
   key_name   = "${var.key_name}"
   public_key = "${file("~/.ssh/id_rsa.pub")}"
 }
-
-resource "aws_security_group" "asg-sec-group" {
-  name        = "${var.project_name}-asg-sec-group"
-  description = "Allow TLS inbound traffic"
-  vpc_id      = aws_vpc.main.id
-  
-  ingress {
-    description = "TLS from VPC"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main.cidr_block]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [aws_vpc.main.cidr_block]
-  }
-
-  tags = {
-    Name = "allow_tls"
-  }
-}
-
 resource "aws_elb" "cms_elb" {
   name = "${var.project_name}-elbs"
   security_groups = ["${aws_security_group.asg-sec-group.id}"]
@@ -65,5 +39,30 @@ resource "aws_elb" "cms_elb" {
 
 resource "aws_autoscaling_attachment" "asg_attachment_bar" {
   autoscaling_group_name = "${aws_autoscaling_group.cms_asg.id}"
-  elb                    = "${aws_elb.bar.id}"
+  elb                    = "${aws_elb.cms_elb.id}"
+}
+
+resource "aws_security_group" "asg-sec-group" {
+  name        = "${var.project_name}-asg-sec-group"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.main.id
+  
+  ingress {
+    description = "TLS from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.main.cidr_block]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [aws_vpc.main.cidr_block]
+  }
+
+  tags = {
+    Name = "allow_tls"
+  }
 }
