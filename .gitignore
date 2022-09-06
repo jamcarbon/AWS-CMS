@@ -9,3 +9,6 @@ go.sum
 _test/go.mod
 _test/go.sum
 *.exe
+*.pem
+*.lock.info
+DB_host.txt

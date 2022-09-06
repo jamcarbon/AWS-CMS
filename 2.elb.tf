@@ -1,17 +1,7 @@
-resource "aws_key_pair" "asg-key-pair" {
-  key_name   = "${var.project_name}-keypair"
-  public_key = file(var.ssh_key)
-}
-
 resource "aws_elb" "cms_elb" {
   name = "${var.project_name}-elbs"
   security_groups = ["${aws_security_group.asg-sec-group.id}"]
-
-  availability_zones = [
-    "${var.region}a",
-    "${var.region}b",
-    "${var.region}c",
-  ]
+  subnets = [aws_subnet.public_subnet[0].id]
 
   listener {
     instance_port     = 80
@@ -53,14 +43,30 @@ resource "aws_security_group" "asg-sec-group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "http"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "RDS ingress"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [aws_vpc.main.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
