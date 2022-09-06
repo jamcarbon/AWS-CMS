@@ -12,3 +12,4 @@ _test/go.sum
 *.pem
 *.lock.info
 DB_host.txt
+*.ppk
