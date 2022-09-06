@@ -1,6 +1,6 @@
 resource "aws_eip" "nat" {
   vpc = true
-  depends_on = [aws_internet_gateway.id]
+  depends_on = [aws_internet_gateway.igw]
 
   tags = {
     Name = "nat"
@@ -19,12 +19,20 @@ resource "aws_nat_gateway" "nat" {
   depends_on = [aws_internet_gateway.igw]
 }
 
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.vpc.id
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
 
   tags = {
-    Name        = "${var.environment}-public-route-table"
-    Environment = "${var.environment}"
+    Name        = "${var.project_name}-private-route-table"
+  }
+}
+
+# Routing tables to route traffic for Public Subnet
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name        = "${var.project_name}-public-route-table"
   }
 }
 
@@ -32,7 +40,7 @@ resource "aws_route_table" "public" {
 resource "aws_route" "public_internet_gateway" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.ig.id
+  gateway_id             = aws_internet_gateway.igw.id
 }
 
 # Route for NAT
@@ -56,11 +64,11 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_security_group" "default" {
-  name        = "${var.environment}-default-sg"
+  name        = "${var.project_name}-default-sg"
   description = "Default SG to alllow traffic from the VPC"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.main.id
   depends_on = [
-    aws_vpc.vpc
+    aws_vpc.main
   ]
 
     ingress {
@@ -78,6 +86,6 @@ resource "aws_security_group" "default" {
   }
 
   tags = {
-    Environment = "${var.project_name}-sg"
+    Name= "${var.project_name}-sg"
   }
 }

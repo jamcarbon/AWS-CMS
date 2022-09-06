@@ -1,7 +1,8 @@
 resource "aws_key_pair" "asg-key-pair" {
-  key_name   = "${var.key_name}"
-  public_key = "${file("~/.ssh/id_rsa.pub")}"
+  key_name   = "${var.project_name}-keypair"
+  public_key = file(var.ssh_key)
 }
+
 resource "aws_elb" "cms_elb" {
   name = "${var.project_name}-elbs"
   security_groups = ["${aws_security_group.asg-sec-group.id}"]

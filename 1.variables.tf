@@ -13,6 +13,11 @@ variable "key_name" {
   default     = "CMS_key"
 }
 
+variable ssh_key {
+  default     = "~/.ssh/id_rsa.pub"
+  description = "Default pub key"
+}
+
 variable "vpc_cidr" {
   description = "CIDR block of the vpc"
   default     = "10.0.0.0/16"
