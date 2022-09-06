@@ -24,7 +24,7 @@ resource "aws_route_table" "private" {
 
   route = [
     {
-      cidr_block                 = "0.0.0.0/0"
+      cidr_block                 = "aws_vpc.cidr_block"
       nat_gateway_id             = aws_nat_gateway.nat.id
     },
   ]
@@ -39,7 +39,7 @@ resource "aws_route_table" "public" {
 
   route = [
     {
-      cidr_block                 = "0.0.0.0/0"
+      cidr_block                 = "aws_vpc.cidr_block"
       gateway_id                 = aws_internet_gateway.igw.id
     },
   ]
