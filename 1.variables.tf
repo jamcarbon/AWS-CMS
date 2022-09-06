@@ -15,7 +15,7 @@ variable "key_name" {
 ## Apps
 variable "image_owner" {
   description = "image owner"
-  default     = {}
+  default     = "878522837758"
 }
 
 variable "desired_capacity" {

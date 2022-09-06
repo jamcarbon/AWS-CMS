@@ -30,21 +30,12 @@ resource "aws_autoscaling_group" "cms_asg" {
   max_size = "${var.max_size}"
   min_size = "${var.min_size}"
 
-  mixed_instances_policy {
-    launch_template {
-      launch_template_specification {
-        launch_template_id = "${aws_launch_template.cms_lt.id}"
-      }
-
-      override {
-        instance_type     = "c4.large"
-        weighted_capacity = "3"
-      }
-
-      override {
-        instance_type     = "c3.large"
-        weighted_capacity = "2"
-      }
-    }
-  }
+  #Uncomment on production to enable spot instances usage
+  #mixed_instances_policy {
+  #  instances_distribution {
+  #    on_demand_percentage_above_base_capacity = 25
+  #    spot_instance_pools = 2
+  #  }
+    
+  #}
 }
