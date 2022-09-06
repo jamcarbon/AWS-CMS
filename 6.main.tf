@@ -23,7 +23,7 @@ resource "aws_launch_template" "cms_lt" {
 }
 
 resource "aws_autoscaling_group" "cms_asg" {
-  vpc_zone_identifier       = [aws_subnet.private-us-east-1a.id, aws_subnet.private-us-east-1b.id, aws_subnet.public-us-east-1a.id, aws_subnet.public-us-east-1b.id]
+  vpc_zone_identifier       = [aws_subnet.public_subnet.id, aws_subnet.private_subnet.id]
   health_check_type         = "ELB"
 
   desired_capacity = "${var.desired_capacity}"
