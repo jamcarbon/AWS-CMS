@@ -44,8 +44,7 @@ resource "aws_launch_template" "cms_lt" {
   image_id               = "ami-0aaabe9caaadf6204" #bitnami wordpress
   #image_id               = "ami-06489866022e12a14"  #aws linux2
   instance_type          = "t2.micro"
-  #key_name               = "${aws_key_pair.asg-key-pair.key_name}"
-  key_name               = "CMS1"
+  key_name               = "${aws_key_pair.asg-key-pair.key_name}"
   vpc_security_group_ids = ["${aws_security_group.asg-sec-group.id}"]
   user_data = "${base64encode(data.template_file.init.rendered)}"
   
