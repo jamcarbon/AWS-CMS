@@ -1,5 +1,5 @@
 # AWS-CMS
-CMS on AWS
+Autoscalable CMS on AWS with load balancing.
 
 This deployment is for a WordPress server, in a secure, performant, scalable, and cost effective way, running on an Autoscaling group, behind an aplication load balancer, which is behind a network load balancer.
 
