@@ -61,4 +61,4 @@ Deployment steps
 
 On production, to reduce instance price, its recommended to use spot instance, and if necesary to autoscale, use on-demand.
 Uncomment these lines:
-https://github.com/jamcarbon/AWS-CMS/blob/d8edd1b5f8a79f92693d46a5ee4ce8247ba378a9/5.main.tf#L57-L62
+[mixed_instances_policy](https://github.com/jamcarbon/AWS-CMS/blob/46120086fc4db38620240472b73870dc2a32581f/5.main.tf#L57-L62)
