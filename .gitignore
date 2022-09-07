@@ -13,3 +13,4 @@ _test/go.sum
 *.lock.info
 DB_host.txt
 *.ppk
+*.drawio
