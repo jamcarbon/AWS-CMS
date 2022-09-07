@@ -23,31 +23,13 @@ data "template_file" "init" {
   template = "${file("${path.module}/scripts/wordpress.sh")}"
 }
 
-data "aws_ami" "wordpress" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["bitnami-wordpress-6.0.2-0-linux-debian-11-x86_64-hvm-ebs-nami-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-  owners = ["aws-marketplace"]
-}
-
 resource "aws_launch_template" "cms_lt" {
   name_prefix            = "${var.project_name}-lt"
-  #image_id               = "${data.aws_ami.wordpress.id}"
   image_id               = "ami-0aaabe9caaadf6204" #bitnami wordpress
-  #image_id               = "ami-06489866022e12a14"  #aws linux2
   instance_type          = "t2.micro"
   key_name               = "${aws_key_pair.asg-key-pair.key_name}"
   vpc_security_group_ids = ["${aws_security_group.asg-sec-group.id}"]
   user_data = "${base64encode(data.template_file.init.rendered)}"
-  
 }
 
 resource "aws_autoscaling_attachment" "asg_attachment_bar" {
