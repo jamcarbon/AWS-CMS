@@ -1,7 +1,7 @@
 # AWS-CMS
 CMS on AWS
 
-This deployment is for a WordPress server, running on an Autoscaling group, behind an aplication load balancer, which is behind a network load balancer.
+This deployment is for a WordPress server, in a secure, performant, scalable, and cost effective way, running on an Autoscaling group, behind an aplication load balancer, which is behind a network load balancer.
 
 WordPress is open-source software, which means anyone can study its code and write apps (plugins) and templates (themes) for it.
 
