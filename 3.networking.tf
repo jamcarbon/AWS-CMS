@@ -8,6 +8,15 @@ resource "aws_vpc" "main" {
   }
 }
 
+resource "aws_eip" "nat" {
+  vpc = true
+  depends_on = [aws_internet_gateway.igw]
+
+  tags = {
+    Name = "eip_nat"
+  }
+}
+
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -16,13 +25,12 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-
 # Public subnet
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.main.id
   count                   = length(var.public_subnets_cidr)
   cidr_block              = element(var.public_subnets_cidr, count.index)
-  availability_zone = element(var.availability_zone, count.index)
+  availability_zone       = element(var.availability_zone, count.index)
   map_public_ip_on_launch = true
 
   tags = {

@@ -51,14 +51,22 @@ resource "aws_launch_template" "cms_lt" {
   
 }
 
+resource "aws_autoscaling_attachment" "asg_attachment_bar" {
+  autoscaling_group_name = aws_autoscaling_group.cms_asg.id
+  lb_target_group_arn    = aws_lb_target_group.alb_tg1.arn
+}
+
 resource "aws_autoscaling_group" "cms_asg" {
   vpc_zone_identifier       = [aws_subnet.public_subnet[0].id, aws_subnet.public_subnet[1].id]
   health_check_type         = "ELB"
   #availability_zones = ["ap-south-1a, ap-south-1b"]
+  target_group_arns = [aws_alb.cms_alb.arn]
 
   desired_capacity = "${var.desired_capacity}"
   max_size = "${var.max_size}"
   min_size = "${var.min_size}"
+
+  #load_balancers = ["${aws_lb.cms_alb.arn}"]
 
   launch_template {
     id      = aws_launch_template.cms_lt.id
