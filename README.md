@@ -29,10 +29,10 @@ Deployment steps
 
         cd GitHubRunners_AWS
 
+3. Install terraform 
+
         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
         sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-
-3. Install terraform 
 
         sudo apt-get update && sudo apt-get install terraform
 
@@ -42,21 +42,21 @@ Deployment steps
 
         terraform init
 
-        You can validate the terraform files by running
+You can validate the terraform files by running
 
-                terraform validate
+        terraform validate
 
-        You can check the terraform plan by running
+You can check the terraform plan by running
 
-                terraform plan
+        terraform plan
 
 5. Deploy all the infrasctructure
 
         terraform apply
 
-        #(If you want to destroy all the infrastucture created:)
+#(If you want to destroy all the infrastucture created:)
 
-                terraform apply -destroy
+        terraform apply -destroy
 
 
 On production, to reduce instance price, its recommended to use spot instance, and if necesary to autoscale, use on-demand.
