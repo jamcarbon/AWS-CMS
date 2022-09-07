@@ -17,9 +17,9 @@ Deployment steps
 
 1. Configure AWS (on your local pc)
 
-    sudo apt install awscli
+        sudo apt install awscli
 
-    aws configure
+        aws configure
 
 2. Clone the repository 
 
