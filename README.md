@@ -42,11 +42,11 @@ Deployment steps
 
         terraform init
 
-You can validate the terraform files by running
+        #You can validate the terraform files by running
 
         terraform validate
 
-You can check the terraform plan by running
+        #You can check the terraform plan by running
 
         terraform plan
 
@@ -54,7 +54,7 @@ You can check the terraform plan by running
 
         terraform apply
 
-#(If you want to destroy all the infrastucture created:)
+        #(If you want to destroy all the infrastucture created:)
 
         terraform apply -destroy
 
