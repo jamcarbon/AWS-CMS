@@ -59,6 +59,5 @@ resource "aws_autoscaling_group" "cms_asg" {
   #    on_demand_percentage_above_base_capacity = 25
   #    spot_instance_pools = 2
   #  }
-    
   #}
 }
