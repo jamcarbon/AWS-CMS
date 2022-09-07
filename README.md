@@ -42,21 +42,21 @@ Deployment steps
 
         terraform init
 
-You can validate the terraform files by running
+        You can validate the terraform files by running
 
-    terraform validate
+                terraform validate
 
-You can check the terraform plan by running
+        You can check the terraform plan by running
 
-    terraform plan
+                terraform plan
 
 5. Deploy all the infrasctructure
 
         terraform apply
 
-#(If you want to destroy all the infrastucture created:)
+        #(If you want to destroy all the infrastucture created:)
 
-    terraform apply -destroy
+                terraform apply -destroy
 
 
 On production, to reduce instance price, its recommended to use spot instance, and if necesary to autoscale, use on-demand.
