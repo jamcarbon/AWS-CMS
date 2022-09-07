@@ -23,24 +23,24 @@ Deployment steps
 
 2. Clone the repository 
 
-    sudo apt install git
+        sudo apt install git
     
-    git clone https://github.com/jamcarbon/AWS-CMS
+        git clone https://github.com/jamcarbon/AWS-CMS
 
-    cd GitHubRunners_AWS
+        cd GitHubRunners_AWS
 
-    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-    sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 
 3. Install terraform 
 
-    sudo apt-get update && sudo apt-get install terraform
+        sudo apt-get update && sudo apt-get install terraform
 
-    cd terraform
+        cd terraform
 
 4. Start Terraform
 
-    terraform init
+        terraform init
 
 You can validate the terraform files by running
 
@@ -52,7 +52,7 @@ You can check the terraform plan by running
 
 5. Deploy all the infrasctructure
 
-    terraform apply
+        terraform apply
 
 #(If you want to destroy all the infrastucture created:)
 
