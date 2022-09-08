@@ -7,7 +7,7 @@ WordPress is open-source software, which means anyone can study its code and wri
 
 I use bitnami Wordpress server, which comes with the new Gutenberg editor and over 45,000 themes and plugins. The image is certified by Bitnami as secure, up-to-date, and packaged using industry best practices, and approved by Automattic, the experts behind WordPress.
 
-![Diagram](https://github.com/jamcarbon/AWS-CMS/blob/c273f109deeed2e8f1c0fbf990ec23df7b1d800b/diagram.png)
+![Diagram](https://github.com/jamcarbon/AWS-CMS/blob/823bfb1ab305e0ec8f5e4d83a832432359c64eec/diagram.png)
 
 Resources used: 
 Application Load Balancer, Network Load Balancer, Autoscaling Group, Elastic IP, Internet Gateway, VPC, Public and Private subnets, RDS
