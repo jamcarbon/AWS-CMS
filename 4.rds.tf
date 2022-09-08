@@ -1,4 +1,4 @@
-resource "random_string" "rds_ps" {
+resource "random_password" "rds_ps" {
   length           = 16
   special          = true
 }
@@ -43,7 +43,7 @@ resource "aws_db_instance" "DataBase" {
   instance_class       = "db.t2.micro"
   db_name              = "mydb"
   username             = "root"
-  password             = "${random_string.rds_ps.result}"
+  password             = "${var.db_password}"
   parameter_group_name = "default.mariadb10.6"
   publicly_accessible = false
   db_subnet_group_name = aws_db_subnet_group.cms.name
@@ -51,7 +51,6 @@ resource "aws_db_instance" "DataBase" {
   skip_final_snapshot = true 
 
 provisioner "local-exec" {
-  command = "echo #!/bin/bash\n#connect the RDS database\nmysql -h ${aws_db_instance.DataBase.endpoint} u root -p${random_string.rds_ps.result}> wordpress.sh"
+  command = "echo ${aws_db_instance.DataBase.endpoint}> db_endpoint.txt"
     }
-
 }

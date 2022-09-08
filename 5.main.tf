@@ -21,6 +21,10 @@ resource "null_resource" "save_key_pair"  {
 
 data "template_file" "init" {
   template = "${file("${path.module}/wordpress.sh")}"
+  vars = {
+    db_ps = "${var.db_password}"
+    db_ep = "${aws_db_instance.DataBase.endpoint}"
+  }  
 }
 
 resource "aws_launch_template" "cms_lt" {
@@ -45,7 +49,7 @@ resource "aws_autoscaling_group" "cms_asg" {
   vpc_zone_identifier       = [aws_subnet.public_subnet[0].id, aws_subnet.public_subnet[1].id]
   health_check_type         = "ELB"
   #availability_zones = ["ap-south-1a, ap-south-1b"]
-  target_group_arns = [aws_alb.cms_alb.arn]
+  target_group_arns = [aws_lb.cms_alb.arn]
 
   desired_capacity = "${var.desired_capacity}"
   max_size = "${var.max_size}"
@@ -53,15 +57,22 @@ resource "aws_autoscaling_group" "cms_asg" {
 
   #load_balancers = ["${aws_lb.cms_alb.arn}"]
 
-  launch_template {
-    id      = aws_launch_template.cms_lt.id
-  }
+  #launch_template {
+  #  id      = aws_launch_template.cms_lt.id
+  #}
 
   #Uncomment on production to enable spot instances usage
   mixed_instances_policy {
+    
     instances_distribution {
-      on_demand_percentage_above_base_capacity = 25
-      spot_instance_pools = 2
+      on_demand_base_capacity                  = 0
+      on_demand_percentage_above_base_capacity = 50
+      spot_allocation_strategy                 = "capacity-optimized"
+    }
+    launch_template {
+      launch_template_specification {
+        launch_template_id = aws_launch_template.cms_lt.id
+      }
     }
   }
 }
