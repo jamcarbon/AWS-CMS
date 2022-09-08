@@ -1,3 +1,21 @@
+resource "aws_lb" "cms_nlb" {
+  name                 = "${var.project_name}-nlb"
+  internal             = false
+  load_balancer_type   = "network"
+  #subnets              = [for subnet in aws_subnet.public_subnet : subnet.id]
+  #vpc_id               = aws_vpc.main.id
+  ip_address_type      = "ipv4"
+
+  subnet_mapping {
+    subnet_id     = aws_subnet.public_subnet[0].id
+    allocation_id = aws_eip.nat.id
+  }
+
+  tags = {
+    Name = "${var.project_name}-nlb"
+  }
+}
+
 resource "aws_lb_listener" "cms_alb" {
   load_balancer_arn = aws_lb.cms_nlb.arn
   port              = "80"
@@ -6,16 +24,19 @@ resource "aws_lb_listener" "cms_alb" {
   #certificate_arn   = "${var.ssl_arn}"
   
   default_action {
-    target_group_arn = aws_lb_target_group.alb_tg1.arn
+    target_group_arn = aws_lb.cms_alb.arn
     type             = "forward"
   }
+  depends_on = [
+    aws_lb.cms_nlb
+  ]
 }
 
-resource "aws_alb" "cms_alb" {
+resource "aws_lb" "cms_alb" {
   name                             = "${var.project_name}-alb"
   #enable_cross_zone_load_balancing = true
   security_groups                  = ["${aws_security_group.asg-sec-group.id}"]
-  subnets                          = [aws_subnet.public_subnet[0].id, aws_subnet.public_subnet[1].id]
+  subnets                          = [aws_subnet.private_subnet[0].id, aws_subnet.private_subnet[1].id]
   load_balancer_type               = "application"
   internal                         = true
   ip_address_type                  = "ipv4"
@@ -45,27 +66,11 @@ resource "aws_lb_target_group" "alb_tg1" {
   }
 }
 
-resource "aws_lb" "cms_nlb" {
-  name                 = "${var.project_name}-nlb"
-  internal             = false
-  load_balancer_type   = "network"
-  #subnets              = [for subnet in aws_subnet.public_subnet : subnet.id]
-  #vpc_id               = aws_vpc.main.id
-  ip_address_type      = "ipv4"
 
-  subnet_mapping {
-    subnet_id     = aws_subnet.public_subnet[0].id
-    allocation_id = aws_eip.nat.id
-  }
-
-  tags = {
-    Name = "${var.project_name}-nlb"
-  }
-}
 
 resource "aws_lb_target_group_attachment" "lb_tga" {
   target_group_arn = aws_lb_target_group.alb_tg1.arn
-  target_id        = aws_alb.cms_alb.arn
+  target_id        = aws_lb.cms_alb.arn
   port             = 80
 }
 

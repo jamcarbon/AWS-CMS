@@ -1,5 +1,5 @@
 # AWS-CMS
-CMS on AWS
+Autoscalable CMS on AWS with load balancing.
 
 This deployment is for a WordPress server, in a secure, performant, scalable, and cost effective way, running on an Autoscaling group, behind an aplication load balancer, which is behind a network load balancer.
 
@@ -29,10 +29,10 @@ Deployment steps
 
         cd GitHubRunners_AWS
 
+3. Install terraform 
+
         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
         sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-
-3. Install terraform 
 
         sudo apt-get update && sudo apt-get install terraform
 
@@ -42,23 +42,23 @@ Deployment steps
 
         terraform init
 
-You can validate the terraform files by running
+        #You can validate the terraform files by running
 
-    terraform validate
+        terraform validate
 
-You can check the terraform plan by running
+        #You can check the terraform plan by running
 
-    terraform plan
+        terraform plan
 
 5. Deploy all the infrasctructure
 
         terraform apply
 
-#(If you want to destroy all the infrastucture created:)
+        #(If you want to destroy all the infrastucture created:)
 
-    terraform apply -destroy
+        terraform apply -destroy
 
 
 On production, to reduce instance price, its recommended to use spot instance, and if necesary to autoscale, use on-demand.
 Uncomment these lines:
-https://github.com/jamcarbon/AWS-CMS/blob/d8edd1b5f8a79f92693d46a5ee4ce8247ba378a9/5.main.tf#L57-L62
+https://github.com/jamcarbon/AWS-CMS/blob/46120086fc4db38620240472b73870dc2a32581f/5.main.tf#L57-L62

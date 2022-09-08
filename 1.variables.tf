@@ -11,6 +11,12 @@ variable "project_name" {
   default     = "cms"
 }
 
+variable "db_password" {
+  description = "The password for the DB master user"
+  type        = string
+  sensitive   = true
+}
+
 ## Networking Service
 variable "key_name" {
   description = "Key name to use"
