@@ -20,7 +20,7 @@ resource "null_resource" "save_key_pair"  {
 }
 
 data "template_file" "init" {
-  template = "${file("${path.module}/scripts/wordpress.sh")}"
+  template = "${file("${path.module}/wordpress.sh")}"
 }
 
 resource "aws_launch_template" "cms_lt" {
@@ -30,6 +30,10 @@ resource "aws_launch_template" "cms_lt" {
   key_name               = "${aws_key_pair.asg-key-pair.key_name}"
   vpc_security_group_ids = ["${aws_security_group.asg-sec-group.id}"]
   user_data = "${base64encode(data.template_file.init.rendered)}"
+
+  depends_on = [
+    aws_db_instance.DataBase
+  ]
 }
 
 resource "aws_autoscaling_attachment" "asg_attachment_bar" {
