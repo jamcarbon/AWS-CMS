@@ -67,7 +67,7 @@ resource "aws_lb_target_group_attachment" "lb_tga" {
   target_group_arn = aws_lb_target_group.alb_tg1.arn
   target_id        = aws_lb.cms_alb.id
   port             = aws_lb_listener.cms_alb.port
-   depends_on = [
+  depends_on = [
     aws_lb_listener.cms_alb    # depends_on is needed as workaround
   ]
 }
