@@ -1,3 +1,8 @@
+resource "random_string" "rds_ps" {
+  length           = 16
+  special          = true
+}
+
 resource "aws_db_subnet_group" "cms" {
   name       = "${var.project_name}-rds-subnet"
   subnet_ids = [aws_subnet.private_subnet[1].id, aws_subnet.private_subnet[0].id]
@@ -38,7 +43,7 @@ resource "aws_db_instance" "DataBase" {
   instance_class       = "db.t2.micro"
   db_name              = "mydb"
   username             = "root"
-  password             = "$w#CffEeoXNaG"
+  password             = "${random_string.rds_ps.result}"
   parameter_group_name = "default.mariadb10.6"
   publicly_accessible = false
   db_subnet_group_name = aws_db_subnet_group.cms.name
@@ -46,7 +51,7 @@ resource "aws_db_instance" "DataBase" {
   skip_final_snapshot = true 
 
 provisioner "local-exec" {
-  command = "echo ${aws_db_instance.DataBase.endpoint} > DB_host.txt"
+  command = "echo #!/bin/bash\n#connect the RDS database\nmysql -h ${aws_db_instance.DataBase.endpoint} u root -p${random_string.rds_ps.result}> wordpress.sh"
     }
 
 }
