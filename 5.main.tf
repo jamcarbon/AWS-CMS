@@ -49,7 +49,7 @@ resource "aws_autoscaling_group" "cms_asg" {
   vpc_zone_identifier       = [aws_subnet.public_subnet[0].id, aws_subnet.public_subnet[1].id]
   health_check_type         = "ELB"
   #availability_zones = ["ap-south-1a, ap-south-1b"]
-  target_group_arns = [aws_lb.cms_alb.arn]
+  target_group_arns = ["${aws_lb_target_group.alb_tg1.arn}"]
 
   desired_capacity = "${var.desired_capacity}"
   max_size = "${var.max_size}"
@@ -75,4 +75,7 @@ resource "aws_autoscaling_group" "cms_asg" {
       }
     }
   }
+  depends_on = [
+    aws_lb_target_group.alb_tg1
+  ]
 }

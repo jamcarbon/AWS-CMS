@@ -1,1 +1,0 @@
-terraform-20220908085608644600000001.czalq65fdmds.ap-south-1.rds.amazonaws.com:3306

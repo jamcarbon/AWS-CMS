@@ -50,3 +50,27 @@ resource "aws_subnet" "private_subnet" {
     Name        = "${var.project_name}-private-subnet"
   }
 }
+
+resource "aws_route_table" "rt1" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "11.0.0.0/16"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+
+  tags = {
+    Name = "${var.project_name}-rt1"
+  }
+}
+
+resource "aws_route_table_association" "rta1" {
+  subnet_id      = aws_subnet.public_subnet[0].id
+  route_table_id = aws_route_table.rt1.id
+}
+
+resource "aws_route_table_association" "rta2" {
+  subnet_id      = aws_subnet.public_subnet[1].id
+  route_table_id = aws_route_table.rt1.id
+}

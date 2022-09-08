@@ -24,12 +24,9 @@ resource "aws_lb_listener" "cms_alb" {
   #certificate_arn   = "${var.ssl_arn}"
   
   default_action {
-    target_group_arn = aws_lb.cms_alb.arn
+    target_group_arn = aws_lb_target_group.alb_tg1.arn
     type             = "forward"
   }
-  depends_on = [
-    aws_lb.cms_nlb
-  ]
 }
 
 resource "aws_lb" "cms_alb" {
@@ -50,7 +47,7 @@ resource "aws_lb" "cms_alb" {
 }
 
 resource "aws_lb_target_group" "alb_tg1" {
-  name        = "${var.project_name}-cms-tg"
+  name        = "${var.project_name}-cms-tg1"
   port        = 80
   target_type = "alb"
   protocol    = "TCP"
@@ -66,12 +63,13 @@ resource "aws_lb_target_group" "alb_tg1" {
   }
 }
 
-
-
 resource "aws_lb_target_group_attachment" "lb_tga" {
   target_group_arn = aws_lb_target_group.alb_tg1.arn
-  target_id        = aws_lb.cms_alb.arn
-  port             = 80
+  target_id        = aws_lb.cms_alb.id
+  port             = aws_lb_listener.cms_alb.port
+   depends_on = [
+    aws_lb_listener.cms_alb    # depends_on is needed as workaround
+  ]
 }
 
 resource "aws_security_group" "asg-sec-group" {
